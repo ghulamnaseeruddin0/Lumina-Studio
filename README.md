@@ -8,7 +8,7 @@ Lumina Studio is an all-in-one video studio with **36 cooperating agents**. It w
 - **Long videos:** 1920x1080, up to 30 minutes, chapters, intro and outro cards
 - **Live view:** a minimal interface shows each agent working, what it is doing right now, and how it works
 - **Account workflows:** Supabase sign-in, personal/team workspaces, reusable templates, project versions, previews, review links, a media library, and a publishing calendar
-- **Deployment:** Vercel or Cloudflare Pages for the static interface, Railway for the persistent renderer/API, PostgreSQL for hosted records, and SQLite for local use
+- **Deployment:** Railway can serve the bundled frontend and persistent API/renderer from one service; alternatively, host `frontend/` on Vercel or Cloudflare Pages and the API/renderer on Railway. PostgreSQL is used for hosted records and SQLite for local use.
 - **Provider costs:** some providers offer free tiers, but quotas, prices, eligibility and usage charges vary and can change. Check each provider's current terms before production use.
 
 ## Quick start (about 10 minutes)
@@ -61,7 +61,7 @@ backend/             Python API, agents, renderer, tests, migration scripts and 
   data/              created automatically: SQLite database, videos, cache and backups (never commit)
   assets/            optional music and branding
   web/               server-served frontend copy required by the existing API static path
-frontend/            Vite browser interface; deploy this folder to Vercel or Cloudflare Pages
+frontend/            Vite browser interface; Railway builds its synchronized backend/web copy, or deploy this folder separately
 docs/                the guides
 ```
 
@@ -71,7 +71,7 @@ source trees synchronized when changing the interface.
 
 ## Honest limits
 
-- **External providers not live-verified.** Automated tests use simulated AI, Pexels, Pixabay and Wikipedia services and include FFmpeg rendering. The suite is being run in this Windows workspace, but the project has not been verified against real provider accounts or a live deployment. Run `python run.py doctor` in your own environment before production.
+- **External providers not live-verified.** The 57 automated tests passed in this workspace using simulated AI, Pexels, Pixabay and Wikipedia services plus FFmpeg rendering. The project has not been deployed to Railway or verified against live provider accounts. Run `python run.py doctor` from `backend/` and verify your configured provider accounts before production.
 - **Free means limited.** Free AI and stock APIs have rate limits that change. The studio paces itself, caches searches, falls back between models, and saves progress after every step, but a 30-minute video can take a long time on free tiers.
 - **Stock footage cannot illustrate everything.** Abstract or very specific topics produce looser matches. Use the footage review screen to swap clips.
 - **A low-end laptop renders slowly.** Use *Draft* quality while testing.

@@ -62,7 +62,7 @@ Schema initialization is performed by `backend/lumina/db.py`. The SQLite-to-Post
 
 ## Deployment shape
 
-The supported split is a static frontend on Vercel or Cloudflare Pages and the persistent API/renderer on Railway. The Railway Dockerfile builds the synchronized frontend source in `backend/web/` and the Python API serves the Vite output from `/`. Railway's Python container needs FFmpeg, a persistent volume, network access to the private PostgreSQL database and HTTPS ingress. Cloudflare Workers or Vercel Functions are not replacements for the long-running Python/FFmpeg worker in this repository.
+For a single-host deployment, Railway's Dockerfile builds the synchronized frontend source in `backend/web/` and the Python API serves the Vite output from `/`. Alternatively, deploy `frontend/` to Vercel or Cloudflare Pages and connect it to the persistent Railway API/renderer. Railway's Python container needs FFmpeg, a persistent volume, network access to the private PostgreSQL database and HTTPS ingress. Cloudflare Workers or Vercel Functions are not replacements for the long-running Python/FFmpeg worker in this repository.
 
 `frontend/vercel.json` contains static frontend security headers. `frontend/wrangler.toml` identifies the Pages build output. Railway's root directory is `backend/`, where `railway.json` uses the Dockerfile and checks `/api/health`. Hosting and provider prices/limits change; consult current provider plans before production use.
 

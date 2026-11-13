@@ -18,7 +18,8 @@
 
 - [ ] From `backend/`, run `python -m unittest discover -s tests -v`.
 - [ ] From `backend/`, run Python compilation; from `frontend/`, run `npm run build`.
-- [ ] Deploy the static `frontend/` app to Vercel or Cloudflare Pages with only `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_URL`.
+- [ ] For an all-Railway setup, set the service Root Directory to `backend`; the Dockerfile builds and bundles the browser UI. Set public `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` build variables and leave `VITE_API_URL` empty for the same-service API.
+- [ ] Alternatively, deploy `frontend/` to Vercel or Cloudflare Pages with `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and `VITE_API_URL`.
 - [ ] Deploy the Dockerfile-backed Python API/renderer to Railway with Root Directory `backend`, attach persistent storage and configure health check `/api/health`.
 - [ ] Confirm `https://<api>/api/health` returns success and the admin panel shows the intended owner and PostgreSQL backend.
 - [ ] Test one regular account and verify admin APIs deny it; test owner controls in a staging environment.

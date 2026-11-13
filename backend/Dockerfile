@@ -18,7 +18,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg fonts-de
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY run.py .
+COPY lumina/ ./lumina/
+COPY scripts/ ./scripts/
+COPY supabase/ ./supabase/
+COPY assets/ ./assets/
 COPY --from=frontend /web/dist/ /app/web/
 ENV LUMINA_DATA=/data
 VOLUME /data
