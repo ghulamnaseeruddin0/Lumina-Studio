@@ -54,7 +54,7 @@ For every specialist below:
 
 ## Agent specifications
 
-The implementation source (`lumina/agents/`) is authoritative for exact method details. The summaries below distinguish AI-backed work from deterministic Python logic and describe the actual registered responsibilities.
+The implementation source (`backend/lumina/agents/`) is authoritative for exact method details. The summaries below distinguish AI-backed work from deterministic Python logic and describe the actual registered responsibilities.
 
 ### 1. Director (`director`, Code, critical)
 - **Purpose/responsibility:** Orchestrate the fixed video-production pipeline and resume work.
@@ -383,7 +383,7 @@ The implementation source (`lumina/agents/`) is authoritative for exact method d
 
 The Director orders execution. Research feeds writing; analytics/trends/audience inform the script; script checks and review gates precede shot planning; shot planning feeds footage search and picking; selected assets flow to narration/timing/render; captions, SEO, thumbnails, rights/license, QA and publishing package create deliverables. Repurpose can create child jobs; Calendar and Brand memory save results. State and events are the common integration contract. A failed optional step is visible as skipped; a critical dependency failure blocks completion.
 
-The separate direct-publishing service (`lumina/publishing.py`) is not a specialist's autonomous tool. It requires a signed-in user, connected provider account and explicit destination review/confirmation. It supports the implemented YouTube, Facebook Page, eligible Instagram Reels and TikTok flows subject to provider approval and configuration. Resend sends a ready reminder and final attempt summary when configured.
+The separate direct-publishing service (`backend/lumina/publishing.py`) is not a specialist's autonomous tool. It requires a signed-in user, connected provider account and explicit destination review/confirmation. It supports the implemented YouTube, Facebook Page, eligible Instagram Reels and TikTok flows subject to provider approval and configuration. Resend sends a ready reminder and final attempt summary when configured.
 
 ## Practical owner workflow
 
@@ -396,8 +396,8 @@ The separate direct-publishing service (`lumina/publishing.py`) is not a special
 
 ## References and implementation limits
 
-- Agent classes and actual registration: `lumina/agents/`; metadata and live descriptions are from each registered class.
-- Pipeline ordering/retry/review gates: `lumina/agents/director.py`.
-- Admin permissions/operations: `lumina/admin.py`; route authorization: `lumina/server.py`.
-- Data structures: `lumina/db.py`.
+- Agent classes and actual registration: `backend/lumina/agents/`; metadata and live descriptions are from each registered class.
+- Pipeline ordering/retry/review gates: `backend/lumina/agents/director.py`.
+- Admin permissions/operations: `backend/lumina/admin.py`; route authorization: `backend/lumina/server.py`.
+- Data structures: `backend/lumina/db.py`.
 - Some external integration claims depend on provider application approval, account type, quotas and API changes. The implementation is not proof that the owner's live credentials have been tested.

@@ -6,8 +6,8 @@
 |---|---|
 | Strangers using your studio | Hosted requests use server-verified Supabase JWTs; local-token compatibility uses a long random token and constant-time comparison. API requests are rate-limited; local token attempts have lockout protection |
 | Websites calling your studio | CORS allow-list (`server.allowed_origins`); other origins get 403 |
-| Keys leaking | Keys are stored only on the server (`data/secrets.json`, owner-only permissions) or in environment variables; never returned by the API; removed from logs, events and generated text |
-| Keys leaking from a GitHub upload | `.gitignore` excludes `.env` and `data/` |
+| Keys leaking | Keys are stored only on the server (`backend/data/secrets.json`, owner-only permissions) or in environment variables; never returned by the API; removed from logs, events and generated text |
+| Keys leaking from a GitHub upload | `.gitignore` excludes `.env` and `data/` at any folder depth, including `backend/data/` |
 | Burning your free quotas | Per-hour job limit, per-API sliding-window limits, search cache |
 | Malicious web content ("prompt injection") | Fetched text is stripped of tags and instruction-like lines and labelled as untrusted data in prompts |
 | Server-side request forgery | Downloads are only allowed from an allow-list of stock hosts, over public addresses; redirects are validated |
@@ -29,14 +29,14 @@
 
 ## What you must still do
 
-- Keep `.env`, `data/` and your token private. Never post screenshots of the terminal link (it contains the token).
+- Keep `backend/.env`, `backend/data/` and your token private. Never post screenshots of the terminal link (it contains the token).
 - Leave the server on `127.0.0.1` unless you put HTTPS in front of it (tunnel or reverse proxy).
 - Rotate the token (*Settings > Create a new token*) if you shared the link.
 - Use free API keys created only for this project, so a leak is easy to fix.
 - Check licences of music you add.
 - Keep `LUMINA_OAUTH_ENCRYPTION_KEY`, OAuth client secrets, Resend credentials, and provider tokens private and stable. Back up the encryption key securely; rotating it requires users to reconnect accounts.
 - Register only the exact HTTPS Railway OAuth callbacks. Review each platform's permissions, app-review rules, privacy settings, and account eligibility before enabling users to publish.
-- Keep Python, FFmpeg and `pip install -U -r requirements.txt` up to date.
+- Keep Python, FFmpeg and `pip install -U -r requirements.txt` (run from `backend/`) up to date.
 - For a hosted multi-user setup, configure the owner UUID, Supabase service-role
   key, and PostgreSQL only in the backend secret manager. Review
   [security and admin permissions](./SECURITY-AND-ADMIN-PERMISSIONS.md).

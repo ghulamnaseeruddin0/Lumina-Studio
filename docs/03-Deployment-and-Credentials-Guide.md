@@ -4,7 +4,7 @@
 
 | Component | Recommended host | Why |
 |---|---|---|
-| Static browser app | Vercel **or** Cloudflare Pages | Vite builds static files from `web/`; quick CDN delivery |
+| Static browser app | Vercel **or** Cloudflare Pages | Vite builds static files from `frontend/`; quick CDN delivery |
 | Python API, agent worker and FFmpeg renderer | Railway | Persistent Python process, Docker, HTTP/SSE, long-running work and volume support |
 | Application records | Railway PostgreSQL (or reachable PostgreSQL) | Production application schema |
 | Identity, OAuth sign-in, profile/preferences | Supabase | Auth/JWT and existing profile integration |
@@ -14,7 +14,7 @@ This repository does not make the Python/FFmpeg job worker into a Vercel Functio
 
 ## 2. Configure Supabase
 
-1. Create a Supabase project and run the profile/settings migration in `supabase/migrations/` using the Supabase SQL Editor.
+1. Create a Supabase project and run the profile/settings migration in `backend/supabase/migrations/` using the Supabase SQL Editor.
 2. Enable email/password. If desired, enable Google and GitHub and supply credentials from those providers.
 3. Configure each OAuth provider's callback URL using the URL Supabase displays.
 4. Set Supabase **Site URL** and allowed redirect URLs for the exact frontend domain and local development URL.
@@ -26,7 +26,7 @@ JWT signing: asymmetric Supabase tokens use the Supabase JWKS endpoint; configur
 
 ## 3. Railway backend deployment
 
-1. Create a Railway project and deploy this repository using its included `Dockerfile` and `railway.json`.
+1. Create a Railway project, set its **Root Directory** to `backend`, and deploy using `backend/Dockerfile` and `backend/railway.json`.
 2. Provision PostgreSQL and attach a persistent volume mounted at `/data`.
 3. Set the required environment variables in the backend service (table below). Set `REQUIRE_POSTGRES=true` and `REQUIRE_SUPABASE_AUTH=true` for a production deployment.
 4. Set the API's exact frontend origin in `LUMINA_ALLOWED_ORIGINS`; avoid wildcards.
@@ -36,12 +36,19 @@ JWT signing: asymmetric Supabase tokens use the Supabase JWKS endpoint; configur
 
 The Railway service must have FFmpeg installed (provided by the Dockerfile), write access to `/data`, outbound HTTPS to configured providers, and private network access to PostgreSQL. Consider worker resource limits: Long videos consume CPU, disk, network bandwidth and time.
 
+The Dockerfile also builds the browser client from `backend/web/` and serves it
+from Railway. Set the `VITE_*` values below as Railway variables so they are
+available at Docker build time; leave `VITE_API_URL` empty to use the same
+Railway service. These Vite values are public browser configuration. When
+deploying the separate `frontend/` site, set the same values in that host's
+build settings.
+
 ### Migration from SQLite
 
 Stop the source app and back up SQLite plus media directories. Provision a fresh empty target PostgreSQL database and set `LUMINA_DATABASE_URL`; run:
 
 ```powershell
-python scripts/migrate_sqlite_to_postgres.py "C:\path\to\data\lumina.db"
+python scripts/migrate_sqlite_to_postgres.py "C:\path\to\backend\data\lumina.db"
 ```
 
 The importer refuses non-empty target application tables/media destinations and records the source hash. Review and verify counts and file paths before moving traffic. Do not run this against production data without a separate backup and approved migration window.
@@ -49,30 +56,30 @@ The importer refuses non-empty target application tables/media destinations and 
 ## 4. Vercel frontend deployment
 
 1. Create a Vercel account and import the GitHub repository.
-2. Set **Root Directory** to `web`.
+2. Set **Root Directory** to `frontend`.
 3. Choose Vite or configure **Build Command** `npm run build`, **Output Directory** `dist`, and install command `npm install`.
 4. Define only the frontend build variables below.
 5. Add the Vercel domain to Supabase allowed URLs and backend `LUMINA_ALLOWED_ORIGINS`.
 6. Deploy; visit the generated HTTPS domain, sign in, and verify the backend API.
 7. Add a custom domain and configure DNS in Vercel if desired. Redeploy after build variable changes because Vite embeds them at build time.
 
-`web/vercel.json` supplies static security headers. Vercel hosts the frontend only; it does not host this persistent FFmpeg worker.
+`frontend/vercel.json` supplies static security headers. Vercel hosts the frontend only; it does not host this persistent FFmpeg worker.
 
 ## 5. Cloudflare Pages frontend deployment
 
 1. Create a Cloudflare account and select **Workers & Pages > Create > Pages** (static Pages project).
 2. Connect the GitHub repository.
-3. Set root directory `web`, build command `npm run build`, output directory `dist`.
+3. Set root directory `frontend`, build command `npm run build`, output directory `dist`.
 4. Set the same three frontend build variables as for Vercel.
 5. Add the Pages/custom domain origin to Supabase redirect allow-list and Railway `LUMINA_ALLOWED_ORIGINS`.
 6. Deploy and verify sign-in, API calls and video streaming.
 7. Configure a custom domain/DNS in Pages and redeploy after environment changes.
 
-`web/wrangler.toml` identifies the static output. Do not configure this project as a Worker renderer; static Pages does not replace the Railway API.
+`frontend/wrangler.toml` identifies the static output. Do not configure this project as a Worker renderer; static Pages does not replace the Railway API.
 
 ## 6. Environment variables and credentials
 
-Values below are names/purposes only. Obtain secrets from the named provider and place them in the **Railway backend variable manager** unless marked frontend. `.env.example` contains safe empty placeholders. Never paste actual credentials into docs, source control, browser code, screenshots, or issue reports.
+Values below are names/purposes only. Obtain secrets from the named provider and place them in the **Railway backend variable manager** unless marked frontend. `backend/.env.example` and `frontend/.env.example` contain safe placeholders for their respective environments. Never paste actual credentials into docs, source control, browser code, screenshots, or issue reports.
 
 ### Frontend build-time variables
 
@@ -134,7 +141,7 @@ AI/stock keys can also be added through app Settings where supported; on Railway
 |---|---|---|
 | `LUMINA_PUBLIC_URL` | Public HTTPS Railway origin for callbacks and short-lived video links | Required for publishing |
 | `LUMINA_FRONTEND_URL` | Frontend origin used after OAuth callback/invitation | Recommended |
-| `LUMINA_OAUTH_ENCRYPTION_KEY` | Fernet encryption key for stored connected-account tokens; generate via `python -c "from lumina.publishing import fernet_key; print(fernet_key())"` | Required for connected publishing |
+| `LUMINA_OAUTH_ENCRYPTION_KEY` | Fernet encryption key for stored connected-account tokens; generate via From `backend/`, run `python -c "from lumina.publishing import fernet_key; print(fernet_key())"` | Required for connected publishing |
 | `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET` | Google OAuth client with YouTube upload permissions | Conditional |
 | `META_APP_ID`, `META_APP_SECRET` | Meta developer app; Facebook Page and eligible Instagram professional workflows | Conditional |
 | `META_GRAPH_VERSION` | Optional API version override; app default otherwise | Optional |

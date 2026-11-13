@@ -11,7 +11,7 @@ The browser is the user interface. The API and renderer must remain running duri
 1. Open the configured frontend URL.
 2. Select **Create an account** to enter full name, email, password and password confirmation. Or use **Continue with Google** / **Continue with GitHub** when the provider is enabled in Supabase.
 3. Use **Sign in** with email/password for an existing account. Use **Forgot password?** for Supabase email recovery.
-4. Local development may instead use the local studio token printed by `python run.py`; hosted multi-user operation should use Supabase Auth.
+4. Local development may instead use the local studio token printed by `python run.py` from `backend/`; hosted multi-user operation should use Supabase Auth.
 
 OAuth buttons depend on Supabase's provider settings, provider credentials, callback URLs and allowed redirects. Lumina cannot enable an OAuth provider just by showing its button.
 

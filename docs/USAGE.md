@@ -74,8 +74,8 @@ The optional **Results email** field controls where Lumina sends (1) the video p
 
 ## Music, logo and your brand
 
-- **Music:** put royalty-free tracks in `assets/music/` (mood by folder name: `calm`, `dark`, `upbeat`, `epic`, `inspiring`, `news`). Add `credits.json` so licences appear in your description. See `assets/music/README.md`. Without music the studio generates a soft ambient pad (a placeholder; real music sounds better).
-- **Logo:** save a transparent `logo.png` in `assets/brand/` for a corner watermark.
+- **Music:** put royalty-free tracks in `backend/assets/music/` (mood by folder name: `calm`, `dark`, `upbeat`, `epic`, `inspiring`, `news`). Add `credits.json` so licences appear in your description. See `backend/assets/music/README.md`. Without music the studio generates a soft ambient pad (a placeholder; real music sounds better).
+- **Logo:** save a transparent `logo.png` in `backend/assets/brand/` for a corner watermark.
 - **Brand memory:** *Settings > Your channel* stores your tone, accent colour, banned phrases and call to action. The studio also remembers past videos and clips so it avoids repeating them.
 - **Analytics:** export a CSV from YouTube Studio (Analytics > Content > Export) and upload it in *Settings > Analytics*. The studio finds patterns (for example whether titles with numbers do better for you) and applies them.
 - **Experiments:** thumbnail concepts are recorded for tracking. Enter views and click-through rate in *Experiments* as results become available.
@@ -113,6 +113,6 @@ The **Quota agent** counts requests for each service and waits when a limit is n
 
 **Why is a clip repeated?** Stock libraries are finite for niche topics. Use the footage review to swap it.
 
-**Where are my files?** `data/jobs/<id>/`. Use *Videos* in the app to open them.
+**Where are my files?** `backend/data/jobs/<id>/`. Use *Videos* in the app to open them.
 
-**How do I free disk space?** `python run.py clean` removes cached downloads and temporary render files; finished videos stay.
+**How do I free disk space?** Run `python run.py clean` from `backend/` to remove cached downloads and temporary render files; finished videos stay.

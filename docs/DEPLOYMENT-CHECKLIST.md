@@ -16,10 +16,10 @@
 
 ## Build and rollout
 
-- [ ] Run `python -m unittest discover -s tests -v`.
-- [ ] Run `python -m py_compile` on changed Python source and `npm --prefix web run build`.
-- [ ] Deploy the static `web/` frontend to Vercel or Cloudflare Pages with only `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_URL`.
-- [ ] Deploy the Dockerfile-backed Python API/renderer to Railway, attach persistent storage and configure health check `/api/health`.
+- [ ] From `backend/`, run `python -m unittest discover -s tests -v`.
+- [ ] From `backend/`, run Python compilation; from `frontend/`, run `npm run build`.
+- [ ] Deploy the static `frontend/` app to Vercel or Cloudflare Pages with only `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_URL`.
+- [ ] Deploy the Dockerfile-backed Python API/renderer to Railway with Root Directory `backend`, attach persistent storage and configure health check `/api/health`.
 - [ ] Confirm `https://<api>/api/health` returns success and the admin panel shows the intended owner and PostgreSQL backend.
 - [ ] Test one regular account and verify admin APIs deny it; test owner controls in a staging environment.
 - [ ] Verify OAuth callbacks, video URLs, notifications and one small test render before enabling users.

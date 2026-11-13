@@ -53,4 +53,4 @@ If a **non-critical** agent fails (for example Trends or Hook), the studio logs 
 
 ## Where the files are
 
-All agent code is in `lumina/agents/` (`planning.py`, `visuals.py`, `audio_agents.py`, `publishing.py`, `repurpose.py`, `director.py`). The renderer is `lumina/render.py`, the timeline math `lumina/timeline.py`, stock search `lumina/sources.py`, voice `lumina/tts.py`.
+All agent code is in `backend/lumina/agents/` (`planning.py`, `visuals.py`, `audio_agents.py`, `publishing.py`, `repurpose.py`, `director.py`). The renderer is `backend/lumina/render.py`, the timeline math `backend/lumina/timeline.py`, stock search `backend/lumina/sources.py`, voice `backend/lumina/tts.py`.

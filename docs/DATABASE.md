@@ -3,12 +3,12 @@
 Lumina supports SQLite for local/offline use and PostgreSQL for a hosted, multi-user deployment. If no database URL is configured, the local SQLite database is:
 
 ```
-data/lumina.db
+backend/data/lumina.db
 ```
 
 It is created automatically. For Railway, set `LUMINA_DATABASE_URL` (or `DATABASE_URL`) to a PostgreSQL connection URL. The production database schema is initialized by the application; generated video and project files remain on the persistent `/data` volume.
 
-To move an existing SQLite installation, stop the studio, back up `data/`, provision an empty PostgreSQL database, and run:
+To move an existing SQLite installation, stop the studio, back up `backend/data/`, provision an empty PostgreSQL database, and run this command from `backend/`:
 
 ```powershell
 $env:LUMINA_DATABASE_URL = "postgresql://..."
@@ -48,48 +48,48 @@ Admin/session tables are sensitive operational records and must not be edited by
 hand while the service is running. See
 [security and admin permissions](./SECURITY-AND-ADMIN-PERMISSIONS.md).
 
-Other files live next to it in the `data/` folder:
+Other files live next to it in the `backend/data/` folder:
 
 ```
-data/jobs/<id>/final.mp4        finished videos and their files
-data/jobs/<id>/state.json       the project's saved progress
-data/cache/assets/              downloaded stock clips (reused across videos)
-data/secrets.json               keys you saved in the app (private; never share)
-data/auth.json                  your access token
-data/settings.json              output preferences
-data/backups/                   automatic backups
-data/logs/errors.log            error log
+backend/data/jobs/<id>/final.mp4        finished videos and their files
+backend/data/jobs/<id>/state.json       the project's saved progress
+backend/data/cache/assets/              downloaded stock clips (reused across videos)
+backend/data/secrets.json               keys you saved in the app (private; never share)
+backend/data/auth.json                  your access token
+backend/data/settings.json              output preferences
+backend/data/backups/                   automatic backups
+backend/data/logs/errors.log            error log
 ```
 
 ## Viewing a local SQLite database in VS Code
 
 1. Install the recommended extension **SQLite Viewer** (`qwtel.sqlite-viewer`). VS Code suggests it when you open the folder.
-2. In the Explorer click `data/lumina.db`. You see every table and can browse rows.
+2. In the Explorer click `backend/data/lumina.db`. You see every table and can browse rows.
 
 Or use SQL in a terminal (needs the free `sqlite3` tool):
 
 ```
-sqlite3 data/lumina.db "select id, topic, status from jobs order by created desc limit 10;"
-sqlite3 data/lumina.db "select source, author, license from assets where job_id='YOUR_JOB_ID';"
+sqlite3 backend/data/lumina.db "select id, topic, status from jobs order by created desc limit 10;"
+sqlite3 backend/data/lumina.db "select source, author, license from assets where job_id='YOUR_JOB_ID';"
 ```
 
 Please do not edit rows by hand while the studio is running.
 
 ## Backups
 
-- **Automatic:** a backup is saved at startup if the last one is older than 24 hours. The newest 7 are kept in `data/backups/`.
-- **Manual:** *Settings > Back up my data now*, or run `python run.py backup`.
+- **Automatic:** a backup is saved at startup if the last one is older than 24 hours. The newest 7 are kept in `backend/data/backups/`.
+- **Manual:** *Settings > Back up my data now*, or run `python run.py backup` from `backend/`.
 - A backup is a `.zip` containing a consistent copy of the database and your settings. It does **not** include your keys or videos (keys are private; videos are big).
 
-**Restore:** stop the studio, unzip the backup, and replace `data/lumina.db` with the `lumina.db` from the zip.
+**Restore:** stop the studio, unzip the backup, and replace `backend/data/lumina.db` with the `lumina.db` from the zip.
 
 ## Moving to another computer
 
-Copy the whole `data/` folder (or just `lumina.db` and `settings.json` plus any videos you want). Re-enter your keys on the new computer.
+Copy the whole `backend/data/` folder (or just `lumina.db` and `settings.json` plus any videos you want). Re-enter your keys on the new computer.
 
 ## Starting fresh
 
-Stop the studio and delete `data/lumina.db` (and optionally `data/jobs/`). A new empty database is created on the next start.
+Stop the studio and delete `backend/data/lumina.db` (and optionally `backend/data/jobs/`). A new empty database is created on the next start.
 
 ## Hosted PostgreSQL
 

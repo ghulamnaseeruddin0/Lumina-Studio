@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumina Studio</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0b1014">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235b8cff'/%3E%3Cpath d='M12 9l11 7-11 7z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section id="auth-shell" class="auth-shell">
+  <div class="auth-story">
+    <a class="brand auth-brand" href="#" aria-label="Lumina Studio home"><span class="logo"></span><b>Lumina</b><span>Studio</span></a>
+    <div class="story-copy">
+      <span class="eyebrow"><span class="pulse-dot"></span> YOUR CREATIVE STUDIO</span>
+      <h1>From a spark<br>to a story worth<br><em>watching.</em></h1>
+      <p>Research, write, produce, and publish thoughtful videos from one calm, focused workspace.</p>
+    </div>
+    <div class="story-foot"><span>01</span> A better way to make videos <span class="story-line"></span> Lumina Studio</div>
+  </div>
+  <div class="auth-side">
+    <div class="auth-card">
+      <div class="auth-heading">
+        <span class="eyebrow">WELCOME TO LUMINA</span>
+        <h2 id="auth-title">Good to see you again.</h2>
+        <p id="auth-description">Sign in to pick up where your next story begins.</p>
+      </div>
+      <div id="auth-notice" class="auth-notice" role="status" hidden></div>
+      <div class="oauth-row">
+        <button id="auth-google" class="oauth-button" type="button"><span class="oauth-g">G</span> Continue with Google</button>
+        <button id="auth-github" class="oauth-button" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.7.08-.69.08-.69 1.12.08 1.71 1.15 1.71 1.15 1 .1.78 2.4 4.65 1.7.1-.73.39-1.23.7-1.51-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.21 1.15-2.99-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.06 1.14a10.7 10.7 0 0 1 5.57 0c2.12-1.44 3.05-1.14 3.05-1.14.61 1.53.23 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.29-2.61 5.23-5.1 5.51.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg> Continue with GitHub</button>
+      </div>
+      <div class="auth-divider"><span>or continue with email</span></div>
+      <form id="auth-form" novalidate>
+        <label id="auth-name-wrap" class="field" hidden>Full name<input id="auth-name" name="name" autocomplete="name" maxlength="100" placeholder="Your name"></label>
+        <label class="field">Email address<input id="auth-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label class="field">Password<input id="auth-password" name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters"></label>
+        <label id="auth-confirm-wrap" class="field" hidden>Confirm password<input id="auth-confirm" name="confirm" type="password" autocomplete="new-password" minlength="8" placeholder="Enter your password again"></label>
+        <button id="auth-submit" class="primary auth-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+      <div class="auth-links"><button id="auth-forgot" class="text-button" type="button">Forgot password?</button><span id="auth-switch-copy">New to Lumina?</span><button id="auth-switch" class="text-button strong" type="button">Create an account</button></div>
+      <div id="local-auth" class="local-auth" hidden>
+        <label class="field">Local studio access token<input id="local-token" type="password" autocomplete="off" placeholder="Paste the token from python run.py"></label>
+        <button id="local-connect" class="text-button strong" type="button">Connect to local studio</button>
+      </div>
+      <p class="auth-legal">By continuing, you agree to use Lumina responsibly and keep your account secure.</p>
+    </div>
+    <span class="auth-copyright">© <span id="year"></span> Lumina Studio</span>
+  </div>
+</section>
+<main id="review-shell" hidden>
+  <section class="card">
+    <span class="eyebrow">LUMINA STUDIO · REVIEW</span>
+    <h1 id="review-title">Shared video review</h1>
+    <p id="review-status" class="muted">Loading secure review…</p>
+    <div id="review-content"></div>
+    <div id="review-comments"></div>
+    <form id="review-comment-form" class="row">
+      <label class="field" style="flex:1">Leave a comment<textarea id="review-comment" maxlength="2000" rows="3" required></textarea></label>
+      <button class="primary" type="submit">Send comment</button>
+    </form>
+  </section>
+</main>
+
+<header class="top" id="app-header" hidden>
+  <div class="brand"><span class="logo"></span><b>Lumina</b><span class="muted">Studio</span></div>
+  <div class="status" id="status" title="System status"></div>
+  <div class="actions">
+    <button class="ghost" id="btn-jobs">Videos</button>
+    <button class="ghost" id="btn-calendar">Calendar</button>
+    <button class="ghost" id="btn-library">Media</button>
+    <button class="ghost" id="btn-workspaces">Workspace</button>
+    <button class="ghost" id="btn-experiments">Experiments</button>
+    <button class="ghost" id="btn-settings">Settings</button>
+    <button class="ghost" id="btn-admin" hidden>Admin</button>
+    <button class="profile-button" id="btn-profile" aria-label="Profile settings"><span id="profile-avatar">L</span><span id="profile-name">Account</span></button>
+    <button class="ghost" id="btn-signout">Sign out</button>
+  </div>
+</header>
+
+<main id="app-shell" hidden>
+  <section id="create" class="card">
+    <h1>What is your video about?</h1>
+    <textarea id="topic" rows="2" maxlength="300" placeholder="Any topic: the history of coffee, how volcanoes work, 5 habits of calm people…"></textarea>
+    <div class="row">
+      <div class="seg" id="format">
+        <button data-v="short" class="on">Short <small>up to 90 s</small></button>
+        <button data-v="long">Long <small>up to 30 min</small></button>
+      </div>
+      <label class="len"><span id="len-label">60 seconds</span><input type="range" id="len" min="30" max="90" step="15" value="60"></label>
+      <select id="lang" aria-label="Narration language"></select>
+    </div>
+    <details class="more">
+      <summary>Options</summary>
+      <label class="chk"><input type="checkbox" id="rv-script"> Let me review the script before continuing</label>
+      <label class="chk"><input type="checkbox" id="rv-scenes"> Let me review the footage before rendering</label>
+      <label class="chk"><input type="checkbox" id="music" checked> Background music</label>
+      <label class="chk long-only"><input type="checkbox" id="repurpose"> Also create 2 Shorts from the best moments</label>
+      <label class="inline">Subtitle languages <input id="translate" placeholder="e.g. es, fr (optional)"></label>
+    </details>
+    <div class="row end">
+      <button class="link" id="btn-ideas">Need ideas?</button>
+      <button class="ghost" id="btn-preflight" type="button">Run preflight</button>
+      <button class="primary" id="btn-create">Create video</button>
+    </div>
+    <div class="row template-actions">
+      <select id="template-select" aria-label="Load a saved video template"><option value="">Saved templates</option></select>
+      <button class="ghost" id="btn-template-save" type="button">Save these options</button>
+      <button class="ghost" id="btn-template-delete" type="button">Delete selected</button>
+    </div>
+    <p class="hint" id="create-hint"></p>
+  </section>
+
+  <section id="live" class="live" hidden>
+    <div class="bar"><div id="overall"></div></div>
+    <div class="live-head">
+      <div><h2 id="job-title"></h2><span class="muted" id="job-sub"></span></div>
+      <div><button class="ghost" id="btn-cancel">Cancel</button><button class="ghost" id="btn-timeline">Edit scenes</button><button class="ghost" id="btn-preview">Preview</button><button class="ghost" id="btn-review-link">Share review</button><button class="ghost" id="btn-schedule">Schedule</button><button class="ghost" id="btn-save-version">Save version</button><button class="ghost" id="btn-versions">Versions</button><button class="ghost" id="btn-new">New video</button></div>
+    </div>
+    <div class="grid">
+      <aside class="rail" id="rail"></aside>
+      <div class="stage">
+        <div class="now card" id="now">
+          <div class="now-top"><span class="num" id="now-num"></span><b id="now-name"></b><span class="pill" id="now-kind"></span></div>
+          <p class="how" id="now-how"></p>
+          <div class="mini"><div id="now-bar"></div></div>
+          <p class="msg" id="now-msg"></p>
+        </div>
+        <div id="gate" class="card gate" hidden></div>
+        <div id="result" class="card" hidden></div>
+        <div id="feed"></div>
+        <details class="card logbox"><summary>Live log</summary><pre id="log"></pre></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="dlg-settings"><div class="dlg" id="settings-body"></div></dialog>
+<dialog id="dlg-admin" class="admin-dialog"><div class="dlg" id="admin-body"></div></dialog>
+<dialog id="dlg-profile"><div class="dlg" id="profile-body"></div></dialog>
+<dialog id="dlg-versions"><div class="dlg" id="versions-body"></div></dialog>
+<dialog id="dlg-calendar"><div class="dlg" id="calendar-body"></div></dialog>
+<dialog id="dlg-library"><div class="dlg" id="library-body"></div></dialog>
+<dialog id="dlg-workspaces"><div class="dlg" id="workspaces-body"></div></dialog>
+<dialog id="dlg-experiments"><div class="dlg" id="experiments-body"></div></dialog>
+<dialog id="dlg-timeline"><div class="dlg" id="timeline-body"></div></dialog>
+<dialog id="dlg-jobs"><div class="dlg" id="jobs-body"></div></dialog>
+<dialog id="dlg-ideas"><div class="dlg" id="ideas-body"></div></dialog>
+<div id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 GitHub stores your code safely and enables backups and the automatic tests included in this project.
 
-**The one rule: never upload your keys.** The included `.gitignore` already excludes `.env` and the whole `data/` folder (which holds saved keys, your access token, the database and videos). Check before you push.
+**The one rule: never upload your keys.** The included `.gitignore` already excludes `.env` and `data/` at any folder depth (including `backend/data/`, which holds saved keys, your access token, the database and videos). Check before you push.
 
 ## One-time setup
 
@@ -28,7 +28,7 @@ git add .
 git status
 ```
 
-**Stop and read the `git status` list.** It must NOT contain `.env`, anything inside `data/`, or any `.db` file. If it does, run `git rm -r --cached data .env` and check `.gitignore`.
+**Stop and read the `git status` list.** It must NOT contain `.env`, anything inside `backend/data/`, or any `.db` file. If it does, run `git rm -r --cached backend/data backend/.env` and check `.gitignore`.
 
 Then:
 
@@ -59,4 +59,4 @@ Assume it is public. Immediately **delete or regenerate the key** in the provide
 
 ## Sharing your music or logo
 
-`assets/music/*` and `assets/brand/logo.png` are ignored by default because their licences may not allow sharing. Remove those lines from `.gitignore` only if you own the rights.
+`backend/assets/music/*` and `backend/assets/brand/logo.png` are ignored by default because their licences may not allow sharing. Remove the matching music/logo lines from `.gitignore` only if you own the rights.

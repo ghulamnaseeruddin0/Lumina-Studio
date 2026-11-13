@@ -18,7 +18,7 @@ authentication, while PostgreSQL stores account-scoped application records.
 ## 1. Configure Supabase
 
 1. Create a Supabase project and run
-   [`supabase/migrations/202611110001_initial_profile_settings.sql`](../supabase/migrations/202611110001_initial_profile_settings.sql)
+   [`backend/supabase/migrations/202611110001_initial_profile_settings.sql`](../backend/supabase/migrations/202611110001_initial_profile_settings.sql)
    in the SQL Editor.
 2. In Authentication, enable email/password and the Google and GitHub providers.
    Add each provider's credentials and the Supabase callback URL shown by the
@@ -29,8 +29,8 @@ authentication, while PostgreSQL stores account-scoped application records.
 
 ## 2. Deploy the API and renderer to Railway
 
-1. Create a Railway project from this repository. Railway uses the included
-   `Dockerfile` and `railway.json`.
+1. Create a Railway project from this repository and set its **Root Directory**
+   to `backend`. Railway then uses `backend/Dockerfile` and `backend/railway.json`.
 2. Attach a persistent volume mounted at `/data`.
 3. Provision a PostgreSQL database and set these service variables:
 
@@ -42,6 +42,8 @@ authentication, while PostgreSQL stores account-scoped application records.
    | `LUMINA_ALLOWED_ORIGINS` | Exact frontend origin(s), comma-separated |
    | `SUPABASE_URL` | Supabase project URL |
    | `SUPABASE_ANON_KEY` | Supabase publishable/anon key |
+   | `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Public Supabase config embedded into the frontend during the Docker build |
+   | `VITE_API_URL` | Optional API origin for the bundled frontend; leave empty to use this Railway service |
    | `SUPABASE_JWT_SECRET` | Only if the project's access tokens use HS256 |
    | `LUMINA_DATABASE_URL` | Private PostgreSQL connection URL (or use Railway's `DATABASE_URL`) |
    | `REQUIRE_POSTGRES` | `true` to fail startup unless PostgreSQL is configured |
@@ -63,6 +65,12 @@ authentication, while PostgreSQL stores account-scoped application records.
 5. On first startup, Lumina initializes its PostgreSQL application schema.
    Keep the Railway volume attached because render state and media are stored
    there, not in PostgreSQL.
+
+The Dockerfile builds the browser UI from `backend/web/` and serves it from the
+Railway service. Railway exposes configured variables to Docker builds when
+they are declared as `ARG`; the `VITE_` values are public browser configuration,
+not secrets. The separately hosted `frontend/` project uses the same Vite
+variables.
 
 ### Configure publishing providers and email
 
@@ -93,7 +101,7 @@ the user reviews the video and confirms the selected accounts.
 
 Create a Pages project from the same repository with:
 
-- **Root directory:** `web`
+- **Root directory:** `frontend`
 - **Build command:** `npm run build`
 - **Build output directory:** `dist`
 
@@ -111,11 +119,11 @@ preference records. Never expose a Supabase service-role key in the browser.
 
 ## Local frontend development
 
-Copy `web/.env.example` to `web/.env.local`, set the three `VITE_` variables,
+Copy `frontend/.env.example` to `frontend/.env.local`, set the three `VITE_` variables,
 then run:
 
 ```powershell
-cd web
+cd frontend
 npm install
 npm run dev
 ```

@@ -10,10 +10,10 @@ __pycache__/
 venv/
 .pytest_cache/
 # your own music library and logo (check licences before sharing)
-assets/music/*
-!assets/music/.gitkeep
-!assets/music/README.md
-assets/brand/logo.png
+backend/assets/music/*
+!backend/assets/music/.gitkeep
+!backend/assets/music/README.md
+backend/assets/brand/logo.png
 # os / editor
 .DS_Store
 Thumbs.db

@@ -2,7 +2,7 @@
 
 Time needed: about 10 minutes. You need a computer with 4 GB RAM or more and an internet connection.
 
-## 1. Install the three tools
+## 1. Install the tools
 
 **Python 3.10 or newer** (python.org/downloads). On Windows, tick **"Add python.exe to PATH"** in the installer.
 Check: open a terminal and run `python --version`.
@@ -17,17 +17,22 @@ Check: `ffmpeg -version` should print a version number (4.4 or newer recommended
 **VS Code** (code.visualstudio.com). Open it, choose *File > Open Folder* and pick the `lumina-studio` folder.
 VS Code suggests recommended extensions (Python, SQLite Viewer): click **Install**.
 
+**Node.js LTS** (nodejs.org) provides `npm` for the browser frontend.
+
 ## 2. Install the project
 
 In VS Code open the terminal (*Terminal > New Terminal*) and run:
 
 ```
+cd backend
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 On Mac/Linux use `source .venv/bin/activate` instead of the second line.
 (If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once.)
+Keep the terminal in `backend/` for the Python commands below. The browser
+frontend is a separate project in `frontend/`.
 
 ## 3. Configure provider keys
 
@@ -47,26 +52,38 @@ change. Review each provider's current terms before use.
 
 Two ways to add them:
 - **In the app:** *Settings > keys* (recommended: stored only on your computer, never shown again), or
-- **In a file:** copy `.env.example` to `.env` (`copy .env.example .env` on Windows) and paste the keys after the `=` signs. Never upload `.env`.
+- **In a file:** copy `backend/.env.example` to `backend/.env` (`copy .env.example .env` from inside `backend/` on Windows) and paste the keys after the `=` signs. Never upload `.env`.
 
 Rate limits and model availability vary by provider, model, region and account.
 The app applies configured request pacing and can use configured provider
 fallbacks, but cannot guarantee that an account has free quota or avoid provider
 charges.
 
-## 4. Check everything
+## 4. Check everything and start the API
 
 ```
 python run.py doctor
 ```
 Every line should say `OK`. Lines that say `FIX` tell you what to do.
 
-## 5. Start
+Then start the API in that terminal:
 
 ```
-python run.py
+python run.py --no-browser
 ```
-Your browser opens with a link like `http://127.0.0.1:8787/#token=...`. The token is your private password; it is saved in the browser. Run `python run.py token` to see the link again.
+Keep this terminal open. Copy the local access token it prints; it is your private password.
+
+## 5. Start the frontend
+
+Open a second terminal from the repository root:
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite. If using local-token sign-in, paste the token printed by the backend. For Supabase sign-in, configure the Vite variables in `frontend/.env.local`.
 
 ## 6. Make your first video
 
@@ -74,8 +91,8 @@ Type a topic, keep **Short**, and press **Create video**. Watch the agents work 
 
 ## Optional upgrades
 
-- **Music:** put royalty-free tracks in `assets/music/` (see the README there).
-- **Logo watermark:** save a transparent `logo.png` in `assets/brand/`.
+- **Music:** put royalty-free tracks in `backend/assets/music/` (see the README there).
+- **Logo watermark:** save a transparent `logo.png` in `backend/assets/brand/`.
 - **Your channel:** Settings > *Your channel* (name, tone, accent colour, call to action).
 - **Better voices:** the studio uses `edge-tts` (free neural voices) automatically. Offline fallbacks: Piper or eSpeak, if installed.
 
@@ -100,4 +117,4 @@ Type a topic, keep **Short**, and press **Create video**. Watch the agents work 
 | Browser says "Not authorised" | Run `python run.py token` and open the link, or paste the token in Settings |
 | Something failed halfway | Open the video in *Videos* and press **Retry**: finished steps are not repeated |
 
-Errors are written to `data/logs/errors.log` (keys are removed from it automatically).
+Errors are written to `backend/data/logs/errors.log` (keys are removed from it automatically).
