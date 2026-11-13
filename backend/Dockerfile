@@ -25,7 +25,6 @@ COPY supabase/ ./supabase/
 COPY assets/ ./assets/
 COPY --from=frontend /web/dist/ /app/web/
 ENV LUMINA_DATA=/data
-VOLUME /data
 EXPOSE 8787
 # Always set a secret token when exposing the server:  docker run -e LUMINA_TOKEN=long-random-text ...
 CMD ["python", "run.py", "serve", "--host", "0.0.0.0", "--no-browser"]
