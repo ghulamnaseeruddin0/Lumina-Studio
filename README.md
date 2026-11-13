@@ -16,13 +16,14 @@ Lumina Studio is an all-in-one video studio with **36 cooperating agents**. It w
 1. Install **Python 3.10+**, **FFmpeg** and **VS Code**: see [docs/SETUP.md](docs/SETUP.md)
 2. In VS Code open this folder, then in the terminal:
    ```
+   cd backend
    python -m venv .venv
    .venv\Scripts\activate          (Mac/Linux: source .venv/bin/activate)
    pip install -r requirements.txt
    ```
-3. Get free keys (an AI key and a footage key) and paste them in the app's Settings, or into `.env`
-4. Check everything: `python run.py doctor`
-5. Start: `python run.py` (your browser opens with a private access link)
+3. Get provider keys and paste them in the app's Settings, or into `backend/.env`
+4. From `backend/`, check everything with `python run.py doctor`, then start the API with `python run.py --no-browser`.
+5. In a second terminal, run `cd frontend`, `npm install`, and `npm run dev`; open the local URL Vite prints. Paste the local access token printed by the backend if using local-token sign-in.
 
 ## The guides
 
@@ -55,15 +56,18 @@ Content calendar planner · Rights and release assistant · Production cost anal
 ## Project layout
 
 ```
-run.py              start the studio / doctor / backup / clean
-lumina/             the application (agents, renderer, server, database)
-web/                the web interface (Vite, deployable to Cloudflare Pages)
-assets/music/       your royalty-free music (optional)
-assets/brand/       logo.png for a watermark (optional)
-data/               created automatically: SQLite database, videos, cache, backups (never commit)
-tests/              automated tests (run offline with fake services)
-docs/               the guides
+backend/             Python API, agents, renderer, tests, migration scripts and Railway Docker app
+  run.py             start the studio / doctor / backup / clean (run commands from backend/)
+  data/              created automatically: SQLite database, videos, cache and backups (never commit)
+  assets/            optional music and branding
+  web/               server-served frontend copy required by the existing API static path
+frontend/            Vite browser interface; deploy this folder to Vercel or Cloudflare Pages
+docs/                the guides
 ```
+
+The Vite source lives in `frontend/`. `backend/web/` is a copy used by the API
+server, whose current static-file path is fixed to that location. Keep the two
+source trees synchronized when changing the interface.
 
 ## Honest limits
 
@@ -75,6 +79,8 @@ docs/               the guides
 - Internet Archive and Unsplash are not included (Unsplash's API terms require hot-linking rather than downloading).
 
 ## Tests
+
+From the repository root, enter `backend/` first, then run:
 
 ```
 python -m unittest discover -s tests -v
