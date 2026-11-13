@@ -1,0 +1,10 @@
+{
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": ["-v", "-s", "./tests", "-p", "test_*.py"],
+  "files.exclude": { "**/__pycache__": true },
+  "files.watcherExclude": { "**/data/**": true },
+  "editor.formatOnSave": false,
+  "files.readonlyInclude": {
+    "{**/.c4z/.extsrcs/*.PROTSYM.cbl,**/.c4z/.extsrcs/*.PROTSYM.listing}": true
+  }
+}

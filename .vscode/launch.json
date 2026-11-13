@@ -1,0 +1,8 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Lumina: start studio", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/run.py", "args": ["serve"], "console": "integratedTerminal" },
+    { "name": "Lumina: doctor (check setup)", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/run.py", "args": ["doctor"], "console": "integratedTerminal" },
+    { "name": "Lumina: run all tests", "type": "debugpy", "request": "launch", "module": "unittest", "args": ["discover", "-s", "tests", "-v"], "console": "integratedTerminal" }
+  ]
+}

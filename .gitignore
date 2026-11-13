@@ -1,0 +1,19 @@
+# secrets and private data: NEVER commit these
+.env
+data/
+*.sqlite
+*.db
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+# your own music library and logo (check licences before sharing)
+assets/music/*
+!assets/music/.gitkeep
+!assets/music/README.md
+assets/brand/logo.png
+# os / editor
+.DS_Store
+Thumbs.db
